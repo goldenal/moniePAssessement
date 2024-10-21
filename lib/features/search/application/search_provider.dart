@@ -7,10 +7,10 @@ class SearchProvider with ChangeNotifier {
   late OverlayEntry overlayEntry;
   bool overlayOpened = false;
   double scalefactor = 0, overlayscale = 0;
-  late AnimationController _controller;
+  late AnimationController controller;
   late Animation<double> _animation;
   Animation<double> get animation => _animation;
-  late AnimationController _markercontroller;
+  late AnimationController markercontroller;
   late Animation<double> _markeranimation;
   Animation<double> get markeranimation => _markeranimation;
   GoogleMapController? mapController;
@@ -18,20 +18,20 @@ class SearchProvider with ChangeNotifier {
   double markerWidth = 85.w;
 
   void initialize(TickerProvider vsync) {
-    _controller = AnimationController(
+    controller = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: vsync,
     );
-    _markercontroller = AnimationController(
+    markercontroller = AnimationController(
       duration: const Duration(milliseconds: 1000),
       vsync: vsync,
     );
 
     _animation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+      CurvedAnimation(parent: controller, curve: Curves.easeInOut),
     );
     _markeranimation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _markercontroller, curve: Curves.easeInOut),
+      CurvedAnimation(parent: markercontroller, curve: Curves.easeInOut),
     );
   }
 
@@ -44,7 +44,7 @@ class SearchProvider with ChangeNotifier {
 
   scaleMarkers() {
     Future.delayed(const Duration(milliseconds: 3000), () {
-      _markercontroller.forward();
+      markercontroller.forward();
     });
     Future.delayed(const Duration(milliseconds: 6000), () {
       markerWidth = 40.w;
@@ -59,11 +59,11 @@ class SearchProvider with ChangeNotifier {
   }
 
   scaleForward() {
-    _controller.forward();
+    controller.forward();
   }
 
   Future<void> scalebackward() async {
-    await _controller.reverse();
+    await controller.reverse();
   }
 
   scaleWidgets() {
@@ -76,5 +76,13 @@ class SearchProvider with ChangeNotifier {
   scaleOverlay(scale) {
     overlayscale = 1;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    // controller.dispose();
+    // markercontroller.dispose();
+    // _controller.dispose();
+    super.dispose();
   }
 }

@@ -7,7 +7,6 @@ import 'package:assessment/features/search/presentation/widgets/searchbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class Search extends StatefulWidget {
@@ -29,23 +28,32 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer<SearchProvider>(builder: (context, provider, child) {
         return Stack(
           children: [
             Container(
-              decoration: BoxDecoration(),
-              
-            ),
-            GoogleMap(
-              onMapCreated: provider.onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: LatLng(23.0225, 72.5714),
-                zoom: 12,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/image/im.jpg'), // Image path
+                  fit: BoxFit.cover, // Covers the entire container
+                ),
               ),
-              mapType: MapType.normal,
             ),
+            // GoogleMap(
+            //   onMapCreated: provider.onMapCreated,
+            //   initialCameraPosition: const CameraPosition(
+            //     target: LatLng(23.0225, 72.5714),
+            //     zoom: 12,
+            //   ),
+            //   mapType: MapType.normal,
+            // ),
 
             Positioned(
               left: 25.w,

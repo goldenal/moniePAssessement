@@ -31,6 +31,14 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    // Make sure to dispose the controller to stop the Ticker
+    // myprovider.controller.dispose();
+    // myprovider.controllerBuyandRent.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Consumer<HomeScreenProvider>(builder: (context, provider, child) {

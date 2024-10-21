@@ -22,7 +22,7 @@ class HomeScreenProvider with ChangeNotifier {
       opaq3 = 0;
 
   double sheetOpaque = 0;
-  late AnimationController _controller;
+  late AnimationController controller;
   late Animation<double> _animation;
   double initialSize = 0.1; // Initial child size of the sheet
   final double maxSize = 0.75; // Max size of the sheet
@@ -31,7 +31,7 @@ class HomeScreenProvider with ChangeNotifier {
   double opacity = 0, welcomTextOpacity = 0, padding = 40.h;
   double locationWidth = 0;
   bool isVisible = false, slidingsheetVisible = false;
-  late AnimationController _controllerBuyandRent;
+  late AnimationController controllerBuyandRent;
   late Animation<int> _animationRent;
   late Animation<int> _animationBuy;
 
@@ -41,24 +41,24 @@ class HomeScreenProvider with ChangeNotifier {
   Animation<double> get animation => _animation;
 
   void initialize(TickerProvider vsync) {
-    _controller = AnimationController(
+    controller = AnimationController(
       duration: const Duration(milliseconds: 1300),
       vsync: vsync,
     );
 
-    _controllerBuyandRent = AnimationController(
+    controllerBuyandRent = AnimationController(
       duration: const Duration(milliseconds: 1000),
       vsync: vsync,
     );
 
     _animation = CurvedAnimation(
-      parent: _controller,
+      parent: controller,
       curve: Curves.easeOutQuint,
     );
     _animationRent =
-        IntTween(begin: 1, end: 2166).animate(_controllerBuyandRent);
+        IntTween(begin: 1, end: 2166).animate(controllerBuyandRent);
     _animationBuy =
-        IntTween(begin: 1, end: 1034).animate(_controllerBuyandRent);
+        IntTween(begin: 1, end: 1034).animate(controllerBuyandRent);
 
     // Start the animation after a short delay
     Future.delayed(const Duration(milliseconds: 2000), () {
@@ -69,7 +69,7 @@ class HomeScreenProvider with ChangeNotifier {
       navpostion = -70.h;
 
       sheetOpaque = 1;
-      _controller.forward();
+      controller.forward();
       Future.delayed(const Duration(milliseconds: 500), () {
         scalePolymorphcard = 1; //scale animation
         notifyListeners();
@@ -150,7 +150,7 @@ class HomeScreenProvider with ChangeNotifier {
           padding = 0;
           notifyListeners();
           Future.delayed(const Duration(milliseconds: 100), () {
-            _controllerBuyandRent.forward();
+            controllerBuyandRent.forward();
             buyRentScale = 1;
 
             notifyListeners();
@@ -171,7 +171,9 @@ class HomeScreenProvider with ChangeNotifier {
 
   @override
   void dispose() {
-    _controller.dispose();
+    //  myprovider.controller.dispose();
+    // myprovider.controllerBuyandRent.dispose();
+   // _controller.dispose();
     super.dispose();
   }
 }
