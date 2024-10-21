@@ -8,6 +8,9 @@ class GlassmorphismCard extends StatelessWidget {
   final String txt;
   final double fontSize, height1, height2;
   final bool isSmallBox;
+  final double width;
+  final int duration;
+  final double scale, opacity;
 
   const GlassmorphismCard(
       {super.key,
@@ -15,7 +18,11 @@ class GlassmorphismCard extends StatelessWidget {
       this.fontSize = 16,
       required this.height1,
       required this.height2,
-      required this.isSmallBox});
+      required this.isSmallBox,
+      required this.scale,
+      required this.width,
+      required this.opacity,
+      required this.duration});
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +30,11 @@ class GlassmorphismCard extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(25.r),
-        child: Container(
+        child: AnimatedContainer(
+          curve: const Cubic(0.5, 0.0, 0.0, 1.0),
+          duration: Duration(milliseconds: duration),
           height: height1,
+          width: width,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25.r),
             boxShadow: [
@@ -49,14 +59,32 @@ class GlassmorphismCard extends StatelessWidget {
               ),
 
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 10.h),
-                child: Text(
-                  txt,
-                  style: GoogleFonts.poppins(
-                    fontSize: fontSize,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w400,
+                padding:
+                    EdgeInsets.symmetric(horizontal: 10.h, vertical: 14.h),
+                child: AnimatedOpacity(
+                  curve: Curves.easeOutQuad,
+                  duration: const Duration(milliseconds: 500),
+                  opacity: opacity,
+                  child: isSmallBox? Text(
+                    txt,
+                    style: GoogleFonts.poppins(
+                      fontSize: fontSize,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ):Center(
+                    child: Text(
+                      txt,
+                      style: GoogleFonts.poppins(
+                        fontSize: fontSize,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
                   ),
+                
+                
+                
                 ),
               ),
               Positioned(

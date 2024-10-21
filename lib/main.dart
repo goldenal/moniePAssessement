@@ -1,9 +1,15 @@
-import 'package:assessment/features/homepage/presentation/screens/homepage.dart';
+import 'package:assessment/features/homepage/application/provider.dart';
+import 'package:assessment/features/navbar/presentation/screen/nav_bar_screen.dart';
+import 'package:assessment/features/search/application/search_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => HomeScreenProvider()),
+    ChangeNotifierProvider(create: (context) => SearchProvider()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -22,10 +28,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        hoverColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         useMaterial3: true,
       ),
-      home: const Homepage(),
+      home: const NavBarScreen(),
     );
   }
 }

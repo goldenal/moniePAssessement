@@ -32,7 +32,7 @@ class RentStat extends StatelessWidget {
               height: 26.h,
             ),
             Text(
-              "$val",
+              val,
               style: GoogleFonts.poppins(
                   fontSize: 33.sp,
                   fontWeight: FontWeight.w600,

@@ -3,38 +3,31 @@ import 'package:assessment/features/homepage/presentation/widgets/buy_stat.dart'
 import 'package:assessment/features/homepage/presentation/widgets/dp_widget.dart';
 import 'package:assessment/features/homepage/presentation/widgets/draggablesheet.dart';
 import 'package:assessment/features/homepage/presentation/widgets/rent_stat.dart';
+import 'package:assessment/features/navbar/presentation/widget/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class Homepage extends StatelessWidget {
-  const Homepage({super.key});
+class Homepage extends StatefulWidget {
+  const Homepage();
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => HomeScreenProvider(),
-      child: const _Homepage(),
-    );
-  }
+  State<Homepage> createState() => _HomepageState();
 }
 
-class _Homepage extends StatefulWidget {
-  const _Homepage({super.key});
-
-  @override
-  State<_Homepage> createState() => _HomepageState();
-}
-
-class _HomepageState extends State<_Homepage> with TickerProviderStateMixin {
+class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    var myprovider = Provider.of<HomeScreenProvider>(context, listen: false);
     // Initialize the animation provider
-    Provider.of<HomeScreenProvider>(context, listen: false).initialize(this);
-    Provider.of<HomeScreenProvider>(context, listen: false).changeDpSize();
+    if (!myprovider.ran) {
+      myprovider.initialize(this);
+      myprovider.startSomeAnimation();
+    }
+    myprovider.requestLocationPermission();
   }
 
   @override
@@ -153,7 +146,8 @@ class _HomepageState extends State<_Homepage> with TickerProviderStateMixin {
                               builder: (context, child) {
                                 return BuyStat(
                                   size: provider.buyRentScale,
-                                  val:provider.formatNumber( provider.animationBuy.value),
+                                  val: provider.formatNumber(
+                                      provider.animationBuy.value),
                                 );
                               }),
                         ),
@@ -180,7 +174,9 @@ class _HomepageState extends State<_Homepage> with TickerProviderStateMixin {
             AnimatedBuilder(
               animation: provider.animation,
               builder: (BuildContext context, Widget? child) {
-                return Visibility(
+                return AnimatedOpacity(
+                  duration: const Duration(milliseconds: 500),
+                  opacity: provider.sheetOpaque,
                   //  visible: provider.slidingsheetVisible,
                   child: Draggablesheet(
                     initialSize: provider.initialSize +
@@ -188,10 +184,23 @@ class _HomepageState extends State<_Homepage> with TickerProviderStateMixin {
                             provider.animation.value,
                     maxSize: provider.maxSize,
                     minSize: provider.minSize,
+                    scale: provider.scalePolymorphcard,
+                    wigdet1Size: provider.polyslideWig1,
+                    wigdet2size: provider.polyslideWig2,
+                    wigdet3Size: provider.polyslide3,
+                    wigdet1Opacity: provider.opaq1,
+                    wigdet2Opacity: provider.opaq2,
+                    wigdet3Opacity: provider.opaq3,
                   ),
                 );
               },
             ),
+            AnimatedPositioned(
+                bottom: provider.navpostion,
+                right: 58.w,
+                left: 58,
+                duration: const Duration(milliseconds: 500),
+                child: Navbar())
           ],
         ),
       );

@@ -34,7 +34,7 @@ class BuyStat extends StatelessWidget {
               height: 26.h,
             ),
             Text(
-              "$val",
+              val,
               style: GoogleFonts.poppins(
                   fontSize: 30.sp,
                   fontWeight: FontWeight.w600,

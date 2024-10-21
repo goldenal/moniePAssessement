@@ -1,8 +1,27 @@
+import 'dart:developer';
+
+import 'package:assessment/features/homepage/presentation/screens/homepage.dart';
+import 'package:assessment/features/search/presentation/screens/search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 // Animation state provider
 class HomeScreenProvider with ChangeNotifier {
+  double navpostion = -70.h;
+  bool ran = false;
+  int navbarIndex = 3;
+  Widget selectedPage = const Homepage();
+
+  double scalePolymorphcard = 0, polyslideSize = 42.w;
+  double polyslideWig1 = 42.w,
+      polyslideWig2 = 42.w,
+      polyslide3 = 42.w,
+      opaq1 = 0,
+      opaq2 = 0,
+      opaq3 = 0;
+
+  double sheetOpaque = 0;
   late AnimationController _controller;
   late Animation<double> _animation;
   double initialSize = 0.1; // Initial child size of the sheet
@@ -43,22 +62,71 @@ class HomeScreenProvider with ChangeNotifier {
 
     // Start the animation after a short delay
     Future.delayed(const Duration(milliseconds: 2000), () {
-      slidingsheetVisible = true;
+      polyslideWig1 = 42.w;
+      polyslideWig2 = 42.w;
+      polyslide3 = 42.w;
+
+      navpostion = -70.h;
+
+      sheetOpaque = 1;
       _controller.forward();
+      Future.delayed(const Duration(milliseconds: 500), () {
+        scalePolymorphcard = 1; //scale animation
+        notifyListeners();
+        Future.delayed(const Duration(milliseconds: 200), () {
+          polyslideWig1 = 360.w; //increase the width
+          notifyListeners();
+          Future.delayed(const Duration(milliseconds: 250), () {
+            opaq1 = 1;
+            polyslideWig2 = 360.w;
+
+            polyslide3 = 360.w; //animating last set
+            notifyListeners();
+
+            Future.delayed(const Duration(milliseconds: 50), () {
+              opaq2 = 1;
+              opaq3 = 1;
+              notifyListeners();
+              Future.delayed(const Duration(milliseconds: 400), () {
+                navpostion = 10.h;
+                notifyListeners();
+              });
+            });
+          });
+        });
+      });
     });
   }
 
-  String formatNumber(int number) {
-   if (number >= 1000) {
-    String numberStr = number.toString();
-    int length = numberStr.length;
-    return '${numberStr.substring(0, length - 3)} ${numberStr.substring(length - 3)}';
-  } else {
-    return number.toString();
+  getPage(indx) {
+    if (indx == 3) {
+      selectedPage = const Homepage();
+    } else {
+      selectedPage = const Search();
+    }
   }
-}
 
-  changeDpSize() {
+  void requestLocationPermission() async {
+    var status = await Permission.location.status;
+    if (!status.isGranted) {
+       Future.delayed(const Duration(milliseconds: 4000), () async{
+                await Permission.location.request();
+              });
+     
+    }
+  }
+
+  String formatNumber(int number) {
+    if (number >= 1000) {
+      String numberStr = number.toString();
+      int length = numberStr.length;
+      return '${numberStr.substring(0, length - 3)} ${numberStr.substring(length - 3)}';
+    } else {
+      return number.toString();
+    }
+  }
+
+  startSomeAnimation() {
     Future.delayed(Duration.zero, () {
       dpSize = 0;
       opacity = 0;
@@ -90,6 +158,15 @@ class HomeScreenProvider with ChangeNotifier {
         });
       });
     });
+    ran = true;
+  }
+
+  updateNavBarIndex(int index) {
+    navbarIndex = index;
+    log(index.toString());
+    getPage(index);
+
+    notifyListeners();
   }
 
   @override
