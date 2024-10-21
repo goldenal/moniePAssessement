@@ -5,7 +5,6 @@ import 'package:assessment/features/search/presentation/widgets/marker.dart';
 import 'package:assessment/features/search/presentation/widgets/overlay.dart';
 import 'package:assessment/features/search/presentation/widgets/searchbox.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -36,7 +35,8 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
         return Stack(
           children: [
             Container(
-              color: Colors.black,
+              decoration: BoxDecoration(),
+              
             ),
             GoogleMap(
               onMapCreated: provider.onMapCreated,
