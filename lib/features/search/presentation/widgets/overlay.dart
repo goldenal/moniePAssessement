@@ -8,23 +8,28 @@ void showOverlay(BuildContext context) {
   var myprovider = Provider.of<SearchProvider>(context, listen: false);
   myprovider.overlayEntry = OverlayEntry(
     builder: (context) => Positioned(
-      bottom: 150.h,
-      left: 25.w,
-      child: ScaleTransition(
-        scale: myprovider.animation,
-        child: Material(
-          shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.circular(20.r), // Set border radius directly
-          ),
-          child: GestureDetector(
-              onTap: () {
-                removeOverlay(context);
-              },
-              child: Overlayoptions()),
-        ),
-      ),
-    ),
+        bottom: 150.h,
+        left: 25.w,
+        child: AnimatedBuilder(
+          animation: myprovider.animation,
+          builder: (context, child) {
+            return Transform.scale(
+              alignment: Alignment.bottomLeft,
+              scale: myprovider.animation.value,
+              child: Material(
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(20.r), // Set border radius directly
+                ),
+                child: GestureDetector(
+                    onTap: () {
+                      removeOverlay(context);
+                    },
+                    child: const Overlayoptions()),
+              ),
+            );
+          },
+        )),
   );
 
   Overlay.of(context).insert(myprovider.overlayEntry);

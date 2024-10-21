@@ -4,11 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 
 class Markerpoint extends StatelessWidget {
   final String txt;
-  const Markerpoint({super.key,required this.txt});
+  final double w;
+  const Markerpoint({super.key, required this.txt, required this.w});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 500),
+      width: w,
       padding: EdgeInsets.all(10.w),
       decoration: BoxDecoration(
           color: const Color.fromRGBO(240, 161, 61, 1),
@@ -16,9 +19,15 @@ class Markerpoint extends StatelessWidget {
               topRight: Radius.circular(10.r),
               bottomRight: Radius.circular(10.r),
               topLeft: Radius.circular(10.r))),
-      child: Text(txt,
-        style: GoogleFonts.poppins(color: Colors.white),
-      ),
+      child: w < 82.w
+          ? Icon(
+              Icons.blinds_closed,
+              color: Colors.white,
+            )
+          : Text(
+              txt,
+              style: GoogleFonts.poppins(color: Colors.white),
+            ),
     );
   }
 }
